@@ -56,13 +56,13 @@ try {
   // Собираем CSS из всех файлов
   const cssFiles = [
     './styles/main.css',
+    './styles/ux-improvements.css',
+    './styles/premium-brands.css',
     './styles/modern-design.css',
     './styles/navigation.css',
-    './styles/adaptive.css',
-    './styles/improved-brands.css',
-    './styles/premium-brands.css',
     './styles/scroll-button.css',
-    './styles/ux-improvements.css'
+    './styles/adaptive.css',
+    './styles/improved-brands.css'
   ];
   
   let cssBundle = '';
