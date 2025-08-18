@@ -15,6 +15,7 @@ yarn-error.log*
 
 # Build outputs
 dist/
+public/
 build/
 *.log
 

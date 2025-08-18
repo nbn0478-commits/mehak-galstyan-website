@@ -34,22 +34,24 @@ function minifyJS(js) {
 console.log('🚀 Начинаем сборку сайта...');
 
 try {
-  // Создаем папки если их нет
-  if (!fs.existsSync('./dist')) {
-    fs.mkdirSync('./dist');
-  }
-  if (!fs.existsSync('./dist/assets')) {
-    fs.mkdirSync('./dist/assets');
-  }
-  if (!fs.existsSync('./dist/assets/css')) {
-    fs.mkdirSync('./dist/assets/css');
-  }
-  if (!fs.existsSync('./dist/assets/js')) {
-    fs.mkdirSync('./dist/assets/js');
-  }
-  if (!fs.existsSync('./dist/images')) {
-    fs.mkdirSync('./dist/images');
-  }
+  // Создаем папки если их нет (и dist, и public для совместимости)
+  ['./dist', './public'].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+    if (!fs.existsSync(`${dir}/assets`)) {
+      fs.mkdirSync(`${dir}/assets`);
+    }
+    if (!fs.existsSync(`${dir}/assets/css`)) {
+      fs.mkdirSync(`${dir}/assets/css`);
+    }
+    if (!fs.existsSync(`${dir}/assets/js`)) {
+      fs.mkdirSync(`${dir}/assets/js`);
+    }
+    if (!fs.existsSync(`${dir}/images`)) {
+      fs.mkdirSync(`${dir}/images`);
+    }
+  });
 
   // Собираем CSS из всех файлов
   const cssFiles = [
@@ -71,9 +73,12 @@ try {
     }
   });
   
-  fs.writeFileSync('./dist/assets/css/bundle.css', cssBundle);
-  const minifiedCSS = minifyCSS(cssBundle);
-  fs.writeFileSync('./dist/assets/css/bundle.min.css', minifiedCSS);
+  // Записываем CSS в обе папки
+  ['./dist', './public'].forEach(dir => {
+    fs.writeFileSync(`${dir}/assets/css/bundle.css`, cssBundle);
+    const minifiedCSS = minifyCSS(cssBundle);
+    fs.writeFileSync(`${dir}/assets/css/bundle.min.css`, minifiedCSS);
+  });
   console.log('✅ CSS собран и минифицирован');
 
   // Собираем JS из всех файлов
@@ -90,31 +95,40 @@ try {
     }
   });
   
-  fs.writeFileSync('./dist/assets/js/bundle.js', jsBundle);
-  const minifiedJS = minifyJS(jsBundle);
-  fs.writeFileSync('./dist/assets/js/bundle.min.js', minifiedJS);
+  // Записываем JS в обе папки
+  ['./dist', './public'].forEach(dir => {
+    fs.writeFileSync(`${dir}/assets/js/bundle.js`, jsBundle);
+    const minifiedJS = minifyJS(jsBundle);
+    fs.writeFileSync(`${dir}/assets/js/bundle.min.js`, minifiedJS);
+  });
   console.log('✅ JS собран и минифицирован');
 
-  // Копируем изображения
+  // Копируем изображения в обе папки
   if (fs.existsSync('./images')) {
     const images = fs.readdirSync('./images');
-    images.forEach(image => {
-      fs.copyFileSync(`./images/${image}`, `./dist/images/${image}`);
+    ['./dist', './public'].forEach(dir => {
+      images.forEach(image => {
+        fs.copyFileSync(`./images/${image}`, `${dir}/images/${image}`);
+      });
     });
     console.log('✅ Изображения скопированы');
   }
 
-  // Копируем HTML
+  // Копируем HTML в обе папки
   if (fs.existsSync('./index.html')) {
-    fs.copyFileSync('./index.html', './dist/index.html');
+    ['./dist', './public'].forEach(dir => {
+      fs.copyFileSync('./index.html', `${dir}/index.html`);
+    });
     console.log('✅ HTML скопирован');
   }
 
-  // Обновляем HTML для использования минифицированных файлов
-  let html = fs.readFileSync('./dist/index.html', 'utf8');
-  html = html.replace('./assets/css/bundle.css', './assets/css/bundle.min.css');
-  html = html.replace('./assets/js/bundle.js', './assets/js/bundle.min.js');
-  fs.writeFileSync('./dist/index.html', html);
+  // Обновляем HTML для использования минифицированных файлов в обеих папках
+  ['./dist', './public'].forEach(dir => {
+    let html = fs.readFileSync(`${dir}/index.html`, 'utf8');
+    html = html.replace('./assets/css/bundle.css', './assets/css/bundle.min.css');
+    html = html.replace('./assets/js/bundle.js', './assets/js/bundle.min.js');
+    fs.writeFileSync(`${dir}/index.html`, html);
+  });
   console.log('✅ HTML обновлен');
 
   // Создаем .htaccess для Apache
@@ -158,19 +172,20 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /index.html [L]
 `.trim();
 
-  fs.writeFileSync('./dist/.htaccess', htaccess);
-  console.log('✅ .htaccess создан');
-
   // Создаем robots.txt
   const robots = `
 User-agent: *
 Allow: /
 
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://mekhakgalstyan.ru/sitemap.xml
 `.trim();
 
-  fs.writeFileSync('./dist/robots.txt', robots);
-  console.log('✅ robots.txt создан');
+  // Создаем служебные файлы в обеих папках
+  ['./dist', './public'].forEach(dir => {
+    fs.writeFileSync(`${dir}/.htaccess`, htaccess);
+    fs.writeFileSync(`${dir}/robots.txt`, robots);
+  });
+  console.log('✅ .htaccess и robots.txt созданы');
 
   // Статистика
   const cssSize = fs.statSync('./dist/assets/css/bundle.css').size;
@@ -183,7 +198,9 @@ Sitemap: https://yourdomain.com/sitemap.xml
   console.log(`JS: ${jsSize} → ${jsMinSize} байт (${Math.round((1 - jsMinSize/jsSize) * 100)}% экономии)`);
 
   console.log('\n🎉 Сборка завершена успешно!');
-  console.log('📁 Файлы готовы к деплою в папке dist/');
+  console.log('📁 Файлы готовы к деплою в папках:');
+  console.log('   📂 dist/ - для обычного хостинга');
+  console.log('   📂 public/ - для Vercel/Netlify/GitHub Pages');
 
 } catch (error) {
   console.error('❌ Ошибка сборки:', error.message);
