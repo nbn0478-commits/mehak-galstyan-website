@@ -137,17 +137,18 @@ try {
     // Удаляем лишние пустые строки после удаления ссылок
     html = html.replace(/\n\s*\n\s*\n/g, '\n\n');
     
-    // Добавляем ссылку на bundle CSS после шрифтов
+    // Добавляем ссылку на bundle CSS после шрифтов с версией для предотвращения кеширования
+    const timestamp = Date.now();
     const fontLinkEnd = html.indexOf('</head>');
     if (fontLinkEnd !== -1) {
-      const bundleLink = '\n    <!-- Bundled Styles -->\n    <link rel="stylesheet" href="./assets/css/bundle.min.css" />\n';
+      const bundleLink = `\n    <!-- Bundled Styles -->\n    <link rel="stylesheet" href="./assets/css/bundle.css?v=${timestamp}" />\n`;
       html = html.slice(0, fontLinkEnd) + bundleLink + html.slice(fontLinkEnd);
     }
     
-    // Добавляем ссылку на bundle JS перед закрытием body
+    // Добавляем ссылку на bundle JS перед закрытием body с версией
     const bodyEnd = html.lastIndexOf('</body>');
     if (bodyEnd !== -1) {
-      const bundleScript = '    <!-- Bundled Scripts -->\n    <script src="./assets/js/bundle.min.js"></script>\n  ';
+      const bundleScript = `    <!-- Bundled Scripts -->\n    <script src="./assets/js/bundle.js?v=${timestamp}"></script>\n  `;
       html = html.slice(0, bodyEnd) + bundleScript + html.slice(bodyEnd);
     }
     
