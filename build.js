@@ -125,11 +125,35 @@ try {
   // Обновляем HTML для использования минифицированных файлов в обеих папках
   ['./dist', './public'].forEach(dir => {
     let html = fs.readFileSync(`${dir}/index.html`, 'utf8');
-    html = html.replace('./assets/css/bundle.css', './assets/css/bundle.min.css');
-    html = html.replace('./assets/js/bundle.js', './assets/js/bundle.min.js');
+    
+    // Удаляем все отдельные ссылки на CSS файлы
+    const cssLinkRegex = /<link rel="stylesheet" href="\.\/styles\/[^"]+\.css" \/>/g;
+    html = html.replace(cssLinkRegex, '');
+    
+    // Удаляем все отдельные ссылки на JS файлы
+    const jsScriptRegex = /<script src="scripts\/[^"]+\.js"><\/script>/g;
+    html = html.replace(jsScriptRegex, '');
+    
+    // Удаляем лишние пустые строки после удаления ссылок
+    html = html.replace(/\n\s*\n\s*\n/g, '\n\n');
+    
+    // Добавляем ссылку на bundle CSS после шрифтов
+    const fontLinkEnd = html.indexOf('</head>');
+    if (fontLinkEnd !== -1) {
+      const bundleLink = '\n    <!-- Bundled Styles -->\n    <link rel="stylesheet" href="./assets/css/bundle.min.css" />\n';
+      html = html.slice(0, fontLinkEnd) + bundleLink + html.slice(fontLinkEnd);
+    }
+    
+    // Добавляем ссылку на bundle JS перед закрытием body
+    const bodyEnd = html.lastIndexOf('</body>');
+    if (bodyEnd !== -1) {
+      const bundleScript = '    <!-- Bundled Scripts -->\n    <script src="./assets/js/bundle.min.js"></script>\n  ';
+      html = html.slice(0, bodyEnd) + bundleScript + html.slice(bodyEnd);
+    }
+    
     fs.writeFileSync(`${dir}/index.html`, html);
   });
-  console.log('✅ HTML обновлен');
+  console.log('✅ HTML обновлен с bundle файлами');
 
   // Создаем .htaccess для Apache
   const htaccess = `
