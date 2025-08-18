@@ -34,17 +34,81 @@ function minifyJS(js) {
 console.log('🚀 Начинаем сборку сайта...');
 
 try {
-  // Читаем и минифицируем CSS
-  const cssBundle = fs.readFileSync('./dist/assets/css/bundle.css', 'utf8');
+  // Создаем папки если их нет
+  if (!fs.existsSync('./dist')) {
+    fs.mkdirSync('./dist');
+  }
+  if (!fs.existsSync('./dist/assets')) {
+    fs.mkdirSync('./dist/assets');
+  }
+  if (!fs.existsSync('./dist/assets/css')) {
+    fs.mkdirSync('./dist/assets/css');
+  }
+  if (!fs.existsSync('./dist/assets/js')) {
+    fs.mkdirSync('./dist/assets/js');
+  }
+  if (!fs.existsSync('./dist/images')) {
+    fs.mkdirSync('./dist/images');
+  }
+
+  // Собираем CSS из всех файлов
+  const cssFiles = [
+    './styles/main.css',
+    './styles/modern-design.css',
+    './styles/navigation.css',
+    './styles/adaptive.css',
+    './styles/improved-brands.css',
+    './styles/premium-brands.css',
+    './styles/scroll-button.css',
+    './styles/ux-improvements.css'
+  ];
+  
+  let cssBundle = '';
+  cssFiles.forEach(file => {
+    if (fs.existsSync(file)) {
+      cssBundle += fs.readFileSync(file, 'utf8') + '\n';
+      console.log(`✅ Добавлен ${file}`);
+    }
+  });
+  
+  fs.writeFileSync('./dist/assets/css/bundle.css', cssBundle);
   const minifiedCSS = minifyCSS(cssBundle);
   fs.writeFileSync('./dist/assets/css/bundle.min.css', minifiedCSS);
-  console.log('✅ CSS минифицирован');
+  console.log('✅ CSS собран и минифицирован');
 
-  // Читаем и минифицируем JS
-  const jsBundle = fs.readFileSync('./dist/assets/js/bundle.js', 'utf8');
+  // Собираем JS из всех файлов
+  const jsFiles = [
+    './scripts/navigation.js',
+    './scripts/main.js'
+  ];
+  
+  let jsBundle = '';
+  jsFiles.forEach(file => {
+    if (fs.existsSync(file)) {
+      jsBundle += fs.readFileSync(file, 'utf8') + '\n';
+      console.log(`✅ Добавлен ${file}`);
+    }
+  });
+  
+  fs.writeFileSync('./dist/assets/js/bundle.js', jsBundle);
   const minifiedJS = minifyJS(jsBundle);
   fs.writeFileSync('./dist/assets/js/bundle.min.js', minifiedJS);
-  console.log('✅ JS минифицирован');
+  console.log('✅ JS собран и минифицирован');
+
+  // Копируем изображения
+  if (fs.existsSync('./images')) {
+    const images = fs.readdirSync('./images');
+    images.forEach(image => {
+      fs.copyFileSync(`./images/${image}`, `./dist/images/${image}`);
+    });
+    console.log('✅ Изображения скопированы');
+  }
+
+  // Копируем HTML
+  if (fs.existsSync('./index.html')) {
+    fs.copyFileSync('./index.html', './dist/index.html');
+    console.log('✅ HTML скопирован');
+  }
 
   // Обновляем HTML для использования минифицированных файлов
   let html = fs.readFileSync('./dist/index.html', 'utf8');
