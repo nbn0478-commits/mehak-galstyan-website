@@ -1,0 +1,614 @@
+/* УЛУЧШЕННЫЕ UX/UI КАРТОЧКИ БРЕНДОВ */
+
+/* Оптимизированная сетка брендов */
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 32px;
+  margin-top: 64px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px;
+}
+
+/* Интерактивные карточки брендов */
+.brand-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.15),
+    0 1px 6px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  will-change: transform;
+}
+
+/* Интерактивный золотой акцент */
+.brand-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(212, 175, 55, 0.4) 20%, 
+    rgba(212, 175, 55, 0.8) 50%, 
+    rgba(212, 175, 55, 0.4) 80%, 
+    transparent 100%
+  );
+  opacity: 0;
+  transition: all 0.4s ease;
+  transform: scaleX(0);
+}
+
+.brand-card:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Улучшенный hover эффект */
+.brand-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  border-color: rgba(212, 175, 55, 0.25);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.2),
+    0 8px 32px rgba(212, 175, 55, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Активное состояние */
+.brand-card:active {
+  transform: translateY(-8px) scale(1.01);
+  transition: all 0.2s ease;
+}
+
+/* Флагманский бренд с особым стилем */
+.brand-card--flagship {
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(212, 175, 55, 0.02);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.15),
+    0 1px 6px rgba(212, 175, 55, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.brand-card--flagship::before {
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(212, 175, 55, 0.6) 25%, 
+    rgba(212, 175, 55, 1) 50%, 
+    rgba(212, 175, 55, 0.6) 75%, 
+    transparent 100%
+  );
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.brand-card--flagship:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 
+    0 24px 72px rgba(0, 0, 0, 0.25),
+    0 12px 40px rgba(212, 175, 55, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Улучшенный хедер карточки */
+.brand-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 32px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 130px;
+  position: relative;
+}
+
+/* Тонкий градиент в хедере */
+.brand-card__header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    transparent 100%
+  );
+}
+
+/* Интерактивные логотипы брендов */
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 20px;
+  padding: 14px 20px;
+  background: rgba(212, 175, 55, 0.12);
+  color: #D4AF37;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 12px;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+}
+
+/* Световой эффект в логотипе */
+.brand-logo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    transparent 100%
+  );
+  transition: left 0.6s ease;
+}
+
+.brand-card:hover .brand-logo {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+}
+
+.brand-card:hover .brand-logo::before {
+  left: 100%;
+}
+
+.brand-logo:active {
+  transform: translateY(-1px) scale(1.02);
+  transition: all 0.2s ease;
+}
+
+/* Интерактивные бейджи */
+.brand-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 16px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  user-select: none;
+}
+
+.brand-badge:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.brand-badge--flagship {
+  background: rgba(212, 175, 55, 0.18);
+  color: #D4AF37;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.15);
+}
+
+.brand-badge--flagship:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.25);
+}
+
+.brand-badge--established {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.brand-badge--established:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.brand-badge--new {
+  background: rgba(212, 175, 55, 0.22);
+  color: #D4AF37;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+  animation: newBadgeGlow 2s ease-in-out infinite alternate;
+}
+
+.brand-badge--new:hover {
+  background: rgba(212, 175, 55, 0.3);
+  border-color: rgba(212, 175, 55, 0.6);
+  animation: none;
+}
+
+@keyframes newBadgeGlow {
+  0% { box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2); }
+  100% { box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4); }
+}
+
+/* Интерактивная медиа секция */
+.brand-card__media {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.brand-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(85%) brightness(0.88) contrast(1.05);
+  transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.brand-card:hover .brand-card__media img {
+  transform: scale(1.08);
+  filter: saturate(95%) brightness(0.98) contrast(1.1);
+}
+
+/* Интерактивный оверлей */
+.brand-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 60%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+  opacity: 0;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(2px);
+}
+
+.brand-card:hover .brand-card__overlay {
+  opacity: 1;
+  backdrop-filter: blur(4px);
+}
+
+/* Статистика в оверлее */
+.brand-card__stats {
+  display: flex;
+  gap: 20px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.stat {
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.stat:hover {
+  transform: translateY(-2px);
+}
+
+.stat__number {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: #D4AF37;
+  margin-bottom: 4px;
+}
+
+.stat__label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+}
+
+/* Улучшенный контент карточки */
+.brand-card__content {
+  padding: 28px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.brand-card__content h3 {
+  font-size: 22px;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin: 0;
+  font-family: 'Cinzel', serif;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.brand-card:hover .brand-card__content h3 {
+  color: rgba(212, 175, 55, 0.9);
+}
+
+.brand-card__tagline {
+  font-size: 11px;
+  color: rgba(212, 175, 55, 0.7);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.brand-card:hover .brand-card__tagline {
+  color: rgba(212, 175, 55, 0.9);
+  transform: translateX(4px);
+}
+
+.brand-card__description {
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  font-size: 14px;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.brand-card:hover .brand-card__description {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Интерактивные фичи */
+.brand-card__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  user-select: none;
+  backdrop-filter: blur(8px);
+}
+
+.feature:hover {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.3);
+  color: rgba(212, 175, 55, 0.9);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+}
+
+.feature__icon {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.feature:hover .feature__icon {
+  transform: scale(1.2);
+}
+
+/* Улучшенные действия */
+.brand-card__actions {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 12px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  user-select: none;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn--ghost::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(212, 175, 55, 0.1) 50%, 
+    transparent 100%
+  );
+  transition: left 0.5s ease;
+}
+
+.btn--ghost:hover::before {
+  left: 100%;
+}
+
+.btn--ghost:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.4);
+  color: #D4AF37;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.2);
+}
+
+.btn--ghost:active {
+  transform: translateY(0);
+  transition: all 0.2s ease;
+}
+
+/* Улучшенная статистика */
+.brand-stats {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+}
+
+.brand-card:hover .brand-stats {
+  color: rgba(212, 175, 55, 0.8);
+  transform: translateX(2px);
+}
+
+/* Улучшенная адаптивность */
+@media (max-width: 1024px) {
+  .brands-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .brands-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 20px;
+    margin-top: 48px;
+  }
+  
+  .brand-card {
+    border-radius: 18px;
+  }
+  
+  .brand-card__header {
+    padding: 24px 20px;
+    min-height: 110px;
+  }
+  
+  .brand-logo {
+    font-size: 18px;
+    padding: 12px 16px;
+    border-radius: 10px;
+  }
+  
+  .brand-card__content {
+    padding: 24px 20px;
+  }
+  
+  .brand-card__content h3 {
+    font-size: 20px;
+  }
+  
+  .brand-card__features {
+    gap: 8px;
+  }
+  
+  .feature {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+  
+  .btn--ghost {
+    padding: 8px 16px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brands-grid {
+    gap: 24px;
+    padding: 0 16px;
+  }
+  
+  .brand-card {
+    border-radius: 16px;
+  }
+  
+  .brand-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-height: auto;
+    padding: 20px 16px;
+  }
+  
+  .brand-card__meta {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .brand-logo {
+    font-size: 16px;
+    padding: 10px 14px;
+    border-radius: 8px;
+  }
+  
+  .brand-card__content {
+    padding: 20px 16px;
+  }
+  
+  .brand-card__content h3 {
+    font-size: 18px;
+  }
+  
+  .brand-card__features {
+    margin: 12px 0;
+  }
+  
+  .brand-card__actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .btn--ghost {
+    text-align: center;
+    padding: 10px 16px;
+  }
+}
+
+/* Touch-friendly улучшения */
+@media (hover: none) and (pointer: coarse) {
+  .brand-card {
+    transition: all 0.2s ease;
+  }
+  
+  .brand-card:active {
+    transform: translateY(-4px) scale(1.01);
+  }
+  
+  .brand-logo:active,
+  .brand-badge:active,
+  .feature:active,
+  .btn--ghost:active {
+    transform: scale(0.98);
+  }
+}

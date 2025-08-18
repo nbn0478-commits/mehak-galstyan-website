@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БАЗОВАЯ НАВИГАЦИЯ - РАБОТАЕТ 100%</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0d;
+            color: white;
+            line-height: 1.6;
+        }
+        
+        /* ПРОСТАЯ НАВИГАЦИЯ */
+        .nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 30px;
+            border-radius: 50px;
+            z-index: 1000;
+            border: 2px solid #f7e98e;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav a {
+            color: #f7e98e;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav a:hover {
+            background: #f7e98e;
+            color: #0a0a0d;
+        }
+        
+        /* СЕКЦИИ */
+        .section {
+            min-height: 100vh;
+            padding: 120px 50px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            scroll-margin-top: 100px;
+        }
+        
+        .section h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #f7e98e;
+        }
+        
+        .section p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            opacity: 0.8;
+        }
+        
+        #hero { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        #about { background: linear-gradient(135deg, #0f3460, #16537e); }
+        #brands { background: linear-gradient(135deg, #533483, #7b68ee); }
+        #philosophy { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        #timeline { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+        #gallery { background: linear-gradient(135deg, #2d3436, #636e72); }
+        #press { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+        #contact { background: linear-gradient(135deg, #fd79a8, #fdcb6e); }
+    </style>
+</head>
+<body>
+    <!-- ПРОСТАЯ НАВИГАЦИЯ -->
+    <nav class="nav">
+        <a href="#hero">Главная</a>
+        <a href="#about">Биография</a>
+        <a href="#brands">Бренды</a>
+        <a href="#philosophy">Философия</a>
+        <a href="#timeline">Путь</a>
+        <a href="#gallery">Галерея</a>
+        <a href="#press">Пресса</a>
+        <a href="#contact">Контакты</a>
+    </nav>
+
+    <!-- СЕКЦИИ -->
+    <section id="hero" class="section">
+        <div>
+            <h2>Мехак Галстян</h2>
+            <p>Основатель ресторанной империи: The Бык, The Пиво, Mocsa</p>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div>
+            <h2>Биография</h2>
+            <p>История успешного ресторатора и предпринимателя</p>
+        </div>
+    </section>
+
+    <section id="brands" class="section">
+        <div>
+            <h2>Бренды</h2>
+            <p>The Бык • The Пиво • Mocsa</p>
+        </div>
+    </section>
+
+    <section id="philosophy" class="section">
+        <div>
+            <h2>Философия</h2>
+            <p>Принципы ведения ресторанного бизнеса</p>
+        </div>
+    </section>
+
+    <section id="timeline" class="section">
+        <div>
+            <h2>Путь к успеху</h2>
+            <p>Этапы развития ресторанной империи</p>
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <div>
+            <h2>Галерея</h2>
+            <p>Фотографии ресторанов и команды</p>
+        </div>
+    </section>
+
+    <section id="press" class="section">
+        <div>
+            <h2>В прессе</h2>
+            <p>Статьи и интервью о компании</p>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div>
+            <h2>Контакты</h2>
+            <p>Свяжитесь с нами для сотрудничества</p>
+        </div>
+    </section>
+
+    <script>
+        console.log('🚀 БАЗОВАЯ НАВИГАЦИЯ ЗАГРУЖЕНА');
+        
+        // Проверить что все секции существуют
+        const sections = ['#hero', '#about', '#brands', '#philosophy', '#timeline', '#gallery', '#press', '#contact'];
+        sections.forEach(id => {
+            const element = document.querySelector(id);
+            if (element) {
+                console.log('✅ Секция найдена:', id);
+            } else {
+                console.error('❌ Секция НЕ найдена:', id);
+            }
+        });
+        
+        // Проверить ссылки
+        const links = document.querySelectorAll('a[href^="#"]');
+        console.log('🔗 Найдено ссылок:', links.length);
+        
+        links.forEach((link, index) => {
+            const href = link.getAttribute('href');
+            console.log(`Ссылка ${index}: ${href}`);
+            
+            link.addEventListener('click', function(e) {
+                console.log('🎯 КЛИК ПО ССЫЛКЕ:', href);
+                // НЕ ОТМЕНЯЕМ preventDefault - пусть браузер сам скроллит!
+            });
+        });
+        
+        console.log('✅ ВСЁ ГОТОВО! Навигация должна работать через браузер!');
+    </script>
+</body>
+</html>

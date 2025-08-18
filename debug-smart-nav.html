@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ДИАГНОСТИКА НАВИГАЦИИ</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { 
+            scroll-behavior: smooth !important; 
+            background: #0a0a0d;
+            color: white;
+        }
+        
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #0a0a0d;
+            color: white;
+        }
+        
+        /* УМНАЯ НАВИГАЦИЯ */
+        .smart-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+        
+        /* Полное меню */
+        .nav-full {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 2px solid #f7e98e;
+            backdrop-filter: blur(10px);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            transition: all 0.4s ease;
+        }
+        
+        .nav-full a {
+            color: #f7e98e;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .nav-full a:hover {
+            background: #f7e98e;
+            color: #0a0a0d;
+            transform: translateY(-1px);
+        }
+        
+        /* Компактное меню */
+        .nav-compact {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 2px solid #f7e98e;
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+            transition: all 0.4s ease;
+        }
+        
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .brand-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #f7e98e;
+            background: #f7e98e;
+        }
+        
+        .brand-name {
+            color: #f7e98e;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .hamburger {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        
+        .hamburger-line {
+            width: 20px;
+            height: 2px;
+            background: #f7e98e;
+            border-radius: 2px;
+        }
+        
+        /* СОСТОЯНИЯ НАВИГАЦИИ */
+        .smart-nav.scrolled .nav-full {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transform: scale(0.8) !important;
+        }
+        
+        .smart-nav.scrolled .nav-compact {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: scale(1) !important;
+        }
+        
+        /* СЕКЦИИ */
+        .section {
+            min-height: 100vh;
+            padding: 120px 50px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            scroll-margin-top: 100px;
+        }
+        
+        .section h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #f7e98e;
+        }
+        
+        .section p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            opacity: 0.8;
+        }
+        
+        #hero { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        #about { background: linear-gradient(135deg, #0f3460, #16537e); }
+        #brands { background: linear-gradient(135deg, #533483, #7b68ee); }
+        #philosophy { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        #timeline { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+        #gallery { background: linear-gradient(135deg, #2d3436, #636e72); }
+        #press { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+        #contact { background: linear-gradient(135deg, #fd79a8, #fdcb6e); }
+        
+        /* ИНДИКАТОР СКРОЛЛА */
+        .scroll-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #f7e98e;
+            color: #0a0a0d;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+    <!-- ИНДИКАТОР СКРОЛЛА -->
+    <div class="scroll-indicator" id="scroll-indicator">
+        Скролл: 0px | Состояние: normal
+    </div>
+
+    <!-- УМНАЯ НАВИГАЦИЯ -->
+    <nav class="smart-nav" id="smart-nav">
+        <!-- Полное меню -->
+        <div class="nav-full" id="nav-full">
+            <a href="#about">Биография</a>
+            <a href="#brands">Бренды</a>
+            <a href="#philosophy">Философия</a>
+            <a href="#timeline">Путь</a>
+            <a href="#gallery">Галерея</a>
+            <a href="#press">Пресса</a>
+            <a href="#contact">Контакты</a>
+        </div>
+        
+        <!-- Компактное меню -->
+        <div class="nav-compact" id="nav-compact">
+            <div class="nav-brand">
+                <div class="brand-avatar"></div>
+                <span class="brand-name">Мехак Галстян</span>
+            </div>
+            
+            <button class="hamburger" id="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- СЕКЦИИ -->
+    <section id="hero" class="section">
+        <div>
+            <h2>Главная</h2>
+            <p>Скроллите вниз чтобы увидеть как работает умная навигация</p>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div>
+            <h2>Биография</h2>
+            <p>История успешного ресторатора</p>
+        </div>
+    </section>
+
+    <section id="brands" class="section">
+        <div>
+            <h2>Бренды</h2>
+            <p>The Бык • The Пиво • Mocsa</p>
+        </div>
+    </section>
+
+    <section id="philosophy" class="section">
+        <div>
+            <h2>Философия</h2>
+            <p>Принципы ведения бизнеса</p>
+        </div>
+    </section>
+
+    <section id="timeline" class="section">
+        <div>
+            <h2>Путь к успеху</h2>
+            <p>Этапы развития компании</p>
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <div>
+            <h2>Галерея</h2>
+            <p>Фотографии ресторанов</p>
+        </div>
+    </section>
+
+    <section id="press" class="section">
+        <div>
+            <h2>В прессе</h2>
+            <p>Статьи и интервью</p>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div>
+            <h2>Контакты</h2>
+            <p>Свяжитесь с нами</p>
+        </div>
+    </section>
+
+    <script>
+        console.log('🚀 ДИАГНОСТИКА УМНОЙ НАВИГАЦИИ');
+        
+        // Элементы
+        const smartNav = document.getElementById('smart-nav');
+        const navFull = document.getElementById('nav-full');
+        const navCompact = document.getElementById('nav-compact');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+        
+        console.log('📋 Элементы найдены:');
+        console.log('- smartNav:', !!smartNav);
+        console.log('- navFull:', !!navFull);
+        console.log('- navCompact:', !!navCompact);
+        
+        // Функция обновления навигации
+        function updateSmartNav() {
+            const scrollY = window.scrollY;
+            
+            // Обновить индикатор
+            if (scrollIndicator) {
+                const state = scrollY > 100 ? 'scrolled' : 'normal';
+                scrollIndicator.textContent = `Скролл: ${scrollY}px | Состояние: ${state}`;
+            }
+            
+            // Переключение навигации
+            if (scrollY > 100) {
+                smartNav.classList.add('scrolled');
+                console.log('🔄 ДОБАВЛЕН КЛАСС scrolled при скролле:', scrollY);
+            } else {
+                smartNav.classList.remove('scrolled');
+                console.log('🔄 УБРАН КЛАСС scrolled при скролле:', scrollY);
+            }
+            
+            // Логирование состояний
+            const fullOpacity = window.getComputedStyle(navFull).opacity;
+            const compactOpacity = window.getComputedStyle(navCompact).opacity;
+            
+            console.log(`📊 Opacity - Full: ${fullOpacity}, Compact: ${compactOpacity}`);
+        }
+        
+        // Обработчик скролла
+        window.addEventListener('scroll', updateSmartNav, { passive: true });
+        
+        // Навигация по ссылкам
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                console.log('🎯 КЛИК ПО ССЫЛКЕ:', this.getAttribute('href'));
+                // НЕ ОТМЕНЯЕМ ДЕЙСТВИЕ ПО УМОЛЧАНИЮ!
+            });
+        });
+        
+        // Гамбургер меню (простая версия)
+        document.getElementById('hamburger').addEventListener('click', function() {
+            console.log('🍔 КЛИК ПО ГАМБУРГЕРУ');
+            alert('Гамбургер работает! Скролл: ' + window.scrollY + 'px');
+        });
+        
+        console.log('✅ ДИАГНОСТИКА ГОТОВА!');
+        
+        // Начальная проверка
+        updateSmartNav();
+    </script>
+</body>
+</html>

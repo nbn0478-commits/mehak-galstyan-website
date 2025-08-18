@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПРОСТАЯ НАВИГАЦИЯ - ТЕСТ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0d;
+            color: white;
+        }
+        
+        /* ПРОСТАЯ НАВИГАЦИЯ */
+        .simple-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            border: 2px solid #f7e98e;
+        }
+        
+        .simple-nav a {
+            color: #f7e98e;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .simple-nav a:hover {
+            background: #f7e98e;
+            color: #0a0a0d;
+        }
+        
+        /* СЕКЦИИ */
+        .section {
+            min-height: 100vh;
+            padding: 100px 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        #section1 { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        #section2 { background: linear-gradient(135deg, #0f3460, #16537e); }
+        #section3 { background: linear-gradient(135deg, #533483, #7b68ee); }
+        #section4 { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        #section5 { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+        
+        /* МОБИЛЬНАЯ НАВИГАЦИЯ */
+        @media (max-width: 768px) {
+            .simple-nav {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+            }
+            
+            .section {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ПРОСТАЯ НАВИГАЦИЯ -->
+    <nav class="simple-nav">
+        <a href="#section1" onclick="scrollToSection('section1')">Секция 1</a>
+        <a href="#section2" onclick="scrollToSection('section2')">Секция 2</a>
+        <a href="#section3" onclick="scrollToSection('section3')">Секция 3</a>
+        <a href="#section4" onclick="scrollToSection('section4')">Секция 4</a>
+        <a href="#section5" onclick="scrollToSection('section5')">Секция 5</a>
+    </nav>
+
+    <!-- СЕКЦИИ -->
+    <section id="section1" class="section">
+        <div>
+            <h1>СЕКЦИЯ 1</h1>
+            <p>Первая секция сайта</p>
+        </div>
+    </section>
+
+    <section id="section2" class="section">
+        <div>
+            <h1>СЕКЦИЯ 2</h1>
+            <p>Вторая секция сайта</p>
+        </div>
+    </section>
+
+    <section id="section3" class="section">
+        <div>
+            <h1>СЕКЦИЯ 3</h1>
+            <p>Третья секция сайта</p>
+        </div>
+    </section>
+
+    <section id="section4" class="section">
+        <div>
+            <h1>СЕКЦИЯ 4</h1>
+            <p>Четвертая секция сайта</p>
+        </div>
+    </section>
+
+    <section id="section5" class="section">
+        <div>
+            <h1>СЕКЦИЯ 5</h1>
+            <p>Пятая секция сайта</p>
+        </div>
+    </section>
+
+    <script>
+        console.log('🚀 ПРОСТАЯ НАВИГАЦИЯ ЗАГРУЖЕНА');
+        
+        // МАКСИМАЛЬНО ПРОСТАЯ ФУНКЦИЯ СКРОЛЛА
+        function scrollToSection(sectionId) {
+            console.log('🎯 Скролл к секции:', sectionId);
+            
+            const element = document.getElementById(sectionId);
+            if (element) {
+                const offsetTop = element.offsetTop - 100;
+                console.log('📍 Позиция:', offsetTop);
+                
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                console.log('✅ Скролл выполнен');
+            } else {
+                console.error('❌ Элемент не найден:', sectionId);
+            }
+        }
+        
+        // АЛЬТЕРНАТИВНЫЙ СПОСОБ ЧЕРЕЗ EVENT LISTENERS
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM загружен');
+            
+            const links = document.querySelectorAll('.simple-nav a');
+            console.log('🔗 Найдено ссылок:', links.length);
+            
+            links.forEach(function(link, index) {
+                const href = link.getAttribute('href');
+                console.log('Ссылка', index, ':', href);
+                
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = href.replace('#', '');
+                    console.log('🖱️ Клик по ссылке:', targetId);
+                    scrollToSection(targetId);
+                });
+            });
+            
+            console.log('✅ Все ссылки подключены');
+        });
+        
+        // ПРОВЕРКА SCROLL СОБЫТИЯ
+        window.addEventListener('scroll', function() {
+            console.log('📜 Скролл позиция:', window.pageYOffset);
+        });
+    </script>
+</body>
+</html>

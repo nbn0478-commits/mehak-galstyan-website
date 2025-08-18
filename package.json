@@ -1,0 +1,32 @@
+{
+  "name": "mehak-galstyan-website",
+  "version": "1.0.0",
+  "description": "Официальный сайт Мехака Галстяна — основателя ресторанных брендов The Бык, The Пиво, Mocsa",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "node build.js",
+    "serve": "cd dist && python3 -m http.server 3000",
+    "deploy": "npm run build && echo 'Сборка готова в папке dist/'"
+  },
+  "keywords": [
+    "restaurant",
+    "website",
+    "mehak-galstyan",
+    "the-byk",
+    "the-pivo", 
+    "mocsa"
+  ],
+  "author": "Мехак Галстян",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/mehak-galstyan-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/mehak-galstyan-website/issues"
+  },
+  "homepage": "https://mekhakgalstyan.ru"
+}
